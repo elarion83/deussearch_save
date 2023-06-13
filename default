@@ -1,0 +1,50 @@
+# the IP(s) on which your node server is running. I chose port 3000.
+upstream app_yourdomain {
+    server 127.0.0.1:80;
+    keepalive 8;
+}
+
+# the nginx server instance
+server {
+    server_name deussearch.fr www.deussearch.fr;
+    access_log /var/log/nginx/deussearch.fr.log;
+
+    # pass the request to the node.js server with the correct headers
+    # and much more can be added, see nginx config options
+    location / {
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_Host;
+      proxy_set_header X-NginX-Proxy true;
+
+      proxy_pass http://app_yourdomain/;
+      proxy_redirect off;
+    }
+ 
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/www.deussearch.fr/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/www.deussearch.fr/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+}
+
+server {
+    if ($host = www.deussearch.fr) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+    if ($host = deussearch.fr) {
+        return 301 https://www.$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    listen [::]:80;
+    server_name deussearch.fr www.deussearch.fr;
+    return 404; # managed by Certbot
+
+
+}
