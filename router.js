@@ -17,7 +17,7 @@ import SinglePlatform from '~/pages/singleplatform'
 import SinglePub from '~/pages/singlepub'
 import allPlatforms from '~/pages/allPlatforms'
 import allGenres from '~/pages/allGenres'
-import allPublishers from '~/pages/allPubs'
+import allPublishers from '~/pages/AllPubs'
 
 Vue.use(Router);
 
