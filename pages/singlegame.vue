@@ -41,8 +41,7 @@
                 v-for="(image, imageIndex) in screenshots"
                 :key="imageIndex"
                 @click="index = imageIndex"
-                class="pr-0 mb-0 pb-0 img_screen"
-                v-if="image != ''"> 
+                class="pr-0 mb-0 pb-0 img_screen"> 
                   <v-img
                       :src="image"
                       :lazy-src="image"
@@ -123,7 +122,6 @@
                 <v-icon>mdi-star</v-icon>
                 {{ displayed_game.rating }} / 5
               </a>
-        </span>
               <h3 v-if="displayed_game.genres != ''" > Genres </h3>
               <ul v-if="displayed_game.genres != ''" class="genre_list text-right mb-3 mt-3">
                 <router-link :title="$t('message.general_more_games')+' '+genre.name_genre" class="game_link tag_link" v-for="genre in displayed_game.genres" :key="genre.id" :to="{ name: 'single_genre', params: { genrename: genre.slug , genreid: genre.id_dDblKey }}">

@@ -2,16 +2,16 @@
   <div data-view>
     <home-banner></home-banner> 
     <home-presentation ></home-presentation>    
-    <streamers-partenaires no-ssr /></streamers-partenaires>
-    <home-blog no-ssr /></home-blog>
+    <streamers-partenaires no-ssr />
+    <home-blog no-ssr />
    <!-- <home-event></home-event>-->
-    <list-of-games show_title="1" pagination="0" tag_id="6" rand="1" limit="6" note_min="4"  nombre_vote="250" no-ssr/></list-of-games>
-    <list-of-games show_title="1" pagination="0" genre_id="6" rand="1" limit="6"  note_min="4" nombre_vote="50" no-ssr/></list-of-games>          
+    <list-of-games show_title="1" pagination="0" tag_id="6" rand="1" limit="6" note_min="4"  nombre_vote="250" no-ssr />
+    <list-of-games show_title="1" pagination="0" genre_id="6" rand="1" limit="6"  note_min="4" nombre_vote="50" no-ssr/>   
     <list-of-games show_title="1" pagination="0" class="pl-0 pr-0 col-lg-12" platform_id="7" note_min="4" limit="6" rand="0" nombre_vote="0" ></list-of-games>
 
     <!-- <list-of-games genre_id="19" rand="1" limit="6" note_min="2" nombre_vote="50" no-ssr/></list-of-games> -->
-    <home-lastresults no-ssr /></home-lastresults>
-    <streamers-recommended no-ssr /></streamers-recommended>
+    <home-lastresults no-ssr />
+    <streamers-recommended no-ssr />
   </div>
 </template>
 

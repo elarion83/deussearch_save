@@ -3,6 +3,9 @@ import { messages } from './lang/lang.js';
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   target: 'static',
+  generate: {
+    fallback: true
+  },
     sitemap: {
         hostname: 'deussearch.fr'
     },
