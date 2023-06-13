@@ -286,7 +286,6 @@
 </template>
 
 <script lang="js">
-  import Gallery from "vuejs-image-gallery";
   import moment from 'moment';
   import CoolLightBox from 'vue-cool-lightbox'
   import Loading from '../components/loading';
