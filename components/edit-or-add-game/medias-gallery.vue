@@ -76,8 +76,7 @@
 </template>
 
 <script>
-  import LazyYoutube from "vue-lazytube";
-  export default  {  
+  export default {
     name: 'media-gallery',
     props:['medias', 'limit'],
     data () {
@@ -86,7 +85,6 @@
         'currentlyAddingMedia':false,
         'addingMediaIssue':false,
         'addedMediaUrl': '',
-        LazyYoutube
       }
     },
     created() {
