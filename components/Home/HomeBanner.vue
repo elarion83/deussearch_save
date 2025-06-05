@@ -20,9 +20,7 @@
                                     <div class="banner-content">
                                         <h1 
                                           class="title deus_main_title"
-                                          :style="titleStyle"
-                                          v-text="$t('message.index_main_title_car_one')"
-                                          ref="mainTitle"
+                                          v-text="mainTitle"
                                         />
                                         <div class="sub-title-wrapper">
                                             <span class="sub-title" v-text="$t('message.index_main_subtitle_1_car_one')" />
@@ -171,13 +169,7 @@ export default {
           contain: 'layout style paint',
           willChange: 'transform'
         },
-        titleStyle: {
-          contain: 'style layout',
-          willChange: 'transform',
-          fontDisplay: 'block',
-          contentVisibility: 'auto',
-          containIntrinsicSize: '0 82px'
-        },
+        mainTitle: '',
         carouselHeight: 'auto',
         resizeObserver: null
     }
@@ -249,6 +241,8 @@ export default {
     }
   },
   created() { 
+    this.mainTitle = this.$t('message.index_main_title_car_one')
+    
     if(this.$cookies.get('deussearch_connected') == 1) {
         this.loggedin = true;
     }
@@ -262,11 +256,15 @@ export default {
     this.setupResizeObserver()
     window.addEventListener('resize', this.updateCarouselHeight)
     
-    // Optimisation du titre
-    if (this.$refs.mainTitle) {
-      this.$refs.mainTitle.style.visibility = 'visible'
-      this.$refs.mainTitle.style.opacity = '1'
-    }
+    this.$nextTick(() => {
+      requestAnimationFrame(() => {
+        const title = this.$el.querySelector('.deus_main_title')
+        if (title) {
+          title.style.visibility = 'visible'
+          title.style.opacity = '1'
+        }
+      })
+    })
   },
   beforeDestroy() {
     if (this.resizeObserver) {

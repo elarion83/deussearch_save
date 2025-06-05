@@ -33,6 +33,13 @@ export default {
         href: '/css/critical-title.css',
         onload: "this.onload=null;this.rel='stylesheet'"
       },
+      {
+        rel: 'preload',
+        as: 'font',
+        type: 'font/woff2',
+        href: '/fonts/oswald-bold.woff2',
+        crossorigin: true
+      },
       { 
         rel: 'preload',
         as: 'style',
@@ -86,11 +93,12 @@ export default {
     '@nuxtjs/date-fns',
     ['@nuxtjs/google-fonts', {
       download: true,
-      display: 'swap',
+      display: 'block',
       preload: true,
       families: {
         Oswald: {
           wght: [700],
+          display: 'block'
         }
       }
     }]
@@ -144,11 +152,6 @@ export default {
         clientId: 'KIJgggrmxdvdlvMUFFmp8IrW02CcbG49'
       }
     }
-  },
-
-  image: {
-    provider: 'static',
-    dir: 'static'
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
