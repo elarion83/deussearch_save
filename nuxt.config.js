@@ -106,6 +106,7 @@ export default {
     '@nuxtjs/router',
     ['cookie-universal-nuxt', { parseJSON: false }],
     '@nuxtjs/auth-next',
+    '@nuxt/image',
     ['nuxt-fontawesome', {
       component: 'fa',
       imports: [
@@ -146,6 +147,36 @@ export default {
     }
   },
 
+  image: {
+    domains: ['img.deussearch.fr'],
+    provider: 'ipx',
+    presets: {
+      thumbnail: {
+        modifiers: {
+          format: 'webp',
+          width: 300,
+          height: 200
+        }
+      },
+      game: {
+        modifiers: {
+          format: 'webp',
+          width: 500,
+          height: 300
+        }
+      }
+    },
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+      '2xl': 1536
+    }
+  },
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     extractCSS: true,
@@ -160,7 +191,7 @@ export default {
     babel: {
       compact: true
     },
-    transpile: ['vuetify/lib', "tiptap-vuetify"],
+    transpile: ['vuetify/lib', "tiptap-vuetify", '@nuxt/image'],
     postcss: {
       preset: {
         autoprefixer: {

@@ -6,7 +6,7 @@
   font-weight: 700;
   margin-bottom: 20px;
   text-transform: uppercase;
-  font-family: "Oswald", system-ui, -apple-system, sans-serif;
+  font-family: "Oswald", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   contain: style layout;
   transform: translateZ(0);
   will-change: transform;
@@ -14,6 +14,24 @@
   max-width: 100%;
   overflow-wrap: break-word;
   height: min-content;
+  display: block;
+  visibility: visible !important;
+  opacity: 1 !important;
+  font-display: block;
+  paint-order: paint;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 82px;
+}
+
+/* Préchargement de la police pour le titre */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: local('Oswald Bold'),
+       url('/fonts/oswald-bold.woff2') format('woff2');
+  text-rendering: optimizeLegibility;
 }
 
 /* Styles pour le carousel pour éviter le CLS */
@@ -23,16 +41,20 @@
   transform: translateZ(0);
   backface-visibility: hidden;
   min-height: 400px;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 400px;
 }
 
 @media (min-width: 1100px) {
   .home_carousel {
     min-height: 500px;
+    contain-intrinsic-size: 0 500px;
   }
 }
 
 @media (max-width: 991px) {
   .deus_main_title {
     font-size: clamp(2rem, 4vw, 3rem);
+    contain-intrinsic-size: 0 64px;
   }
 } 

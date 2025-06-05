@@ -22,6 +22,7 @@
                                           class="title deus_main_title"
                                           :style="titleStyle"
                                           v-text="$t('message.index_main_title_car_one')"
+                                          ref="mainTitle"
                                         />
                                         <div class="sub-title-wrapper">
                                             <span class="sub-title" v-text="$t('message.index_main_subtitle_1_car_one')" />
@@ -173,7 +174,9 @@ export default {
         titleStyle: {
           contain: 'style layout',
           willChange: 'transform',
-          fontDisplay: 'swap'
+          fontDisplay: 'block',
+          contentVisibility: 'auto',
+          containIntrinsicSize: '0 82px'
         },
         carouselHeight: 'auto',
         resizeObserver: null
@@ -258,6 +261,12 @@ export default {
     this.initializeCarouselHeight()
     this.setupResizeObserver()
     window.addEventListener('resize', this.updateCarouselHeight)
+    
+    // Optimisation du titre
+    if (this.$refs.mainTitle) {
+      this.$refs.mainTitle.style.visibility = 'visible'
+      this.$refs.mainTitle.style.opacity = '1'
+    }
   },
   beforeDestroy() {
     if (this.resizeObserver) {
