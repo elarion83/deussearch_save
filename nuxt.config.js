@@ -113,6 +113,12 @@ export default {
   build: {
     transpile: ['vuetify/lib', "tiptap-vuetify"],
     publicPath: '/_nuxt/',
+    optimization: {
+      minimize: true
+    },
+    babel: {
+      compact: true
+    }
   },
 
   googleFonts: {
@@ -128,6 +134,9 @@ export default {
   // Configuration spécifique pour Vercel
   generate: {
     dir: 'dist',
-    fallback: true
+    fallback: true,
+    exclude: [
+      /^\/admin/ // Exclure les routes admin de la génération statique
+    ]
   }
 }

@@ -7,9 +7,18 @@
       "config": {
         "serverFiles": [
           "package.json",
-          "lang/**"
-        ]
+          "lang/**",
+          "node_modules/**"
+        ],
+        "tscOptions": {
+          "sourceMap": false
+        }
       }
     }
-  ]
+  ],
+  "build": {
+    "env": {
+      "NODE_OPTIONS": "--max-old-space-size=3072"
+    }
+  }
 } 
