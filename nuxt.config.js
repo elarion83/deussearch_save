@@ -106,7 +106,6 @@ export default {
     '@nuxtjs/router',
     ['cookie-universal-nuxt', { parseJSON: false }],
     '@nuxtjs/auth-next',
-    '@nuxt/image',
     ['nuxt-fontawesome', {
       component: 'fa',
       imports: [
