@@ -250,22 +250,15 @@
           </div>
           <h2 v-if="similar_loaded && displayed_game.tags  && displayed_game.tags[1] && similar_games[0]" class="mt-3 mb-1 pl-2"> {{ $t('message.similar_games') }} </h2>
           <div v-if="similar_loaded && displayed_game.tags  && displayed_game.tags[1]" class="col-lg-12 pt-3 game_displayed pb-3 similar_games future_results" id="thisyear">
-            <div class="game-item deus_result deus_large" pagination="0" :key="id" v-for="(game,id) in similar_games" v-bind:style="{ backgroundImage: 'url(' + game.img_url + ')' }"> 
-                <router-link  :title="$t('message.general_know_more')+' '+game.game_name"  :to="{ name: 'single_game', params: { gamename: game.slug , gameid: game.id }}" class="game_url"  >  
-                    <div class="game_deus_bg"></div>
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-30" v-for="(game, id) in similar_games" :key="id">
+              <GameImage :game="game">
+                <router-link :to="{ name: 'game', params: { id: game.id, slug: game.slug }}" class="game-link">
+                  <div class="game-overlay">
+                    <h4 class="title">{{ game.title }}</h4>
+                    <p class="game-meta">{{ game.platform }}</p>
+                  </div>
                 </router-link>
-              
-                <router-link  :title="$t('message.general_know_more')+' '+game.game_name"  :to="{ name: 'single_game', params: { gamename: game.slug , gameid: game.id }}" class="game_link"  >  
-                    <div class="game-content">
-                        <div class="game-content-body">
-                          <h3 class="title">{{ game.game_name }} </h3>
-                        </div>
-                    </div>
-                </router-link>
-                <span v-if="game.rating > 0" class="deus_see_more game_rating">
-                  {{ game.rating }}
-                  <font-awesome-icon  :icon="['fas', 'star']" />
-                </span>   
+              </GameImage>
             </div>
           </div>
           <loading v-else-if="displayed_game.tags[1] && displayed_game.tags " class="mt-5"></loading>
@@ -290,6 +283,7 @@
   import HomeListOfGames from '../components/Home/HomeListOfGames';
   import HeadBanner from '../components/HeadBanner';
   import 'vue-cool-lightbox/dist/vue-cool-lightbox.min.css'
+  import GameImage from '../components/GameImage.vue'
   export default  {
     name: 'SingleGame',
     props: ['game', 'used_lang_for_route', 'locale'],
@@ -311,7 +305,8 @@
       'head-banner' : HeadBanner,
       'loading' : Loading,      
       'list-of-games' : HomeListOfGames,
-      CoolLightBox
+      CoolLightBox,
+      GameImage
     },
     
     async asyncData({ $axios, params}) {

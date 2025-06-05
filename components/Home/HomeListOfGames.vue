@@ -86,12 +86,15 @@
 <script lang="js">
 
   import Loading from '@/components/loading'
+  import GameImage from '../GameImage.vue'
+
   export default  {
     name: 'home-list-of-games',
     props: ['tag_id', 'pagination','genre_id','platform_id','pub_id','ordering', 'show_title', 'title', 'rand', 'used_locale', 'note_min', 'nombre_vote', 'limit'],
     
     components: {
-      'loading' : Loading
+      'loading' : Loading,
+      GameImage
     },
     mounted () {
 
