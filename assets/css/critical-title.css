@@ -35,6 +35,39 @@
   text-rendering: optimizeLegibility;
 }
 
+/* Optimisation du sous-titre pour le LCP */
+.sub-title {
+  display: block;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.6;
+  color: #ffffff;
+  margin: 10px 0 0;
+  padding: 0;
+  font-weight: 400;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  text-rendering: optimizeLegibility;
+  contain: content;
+  visibility: visible !important;
+  opacity: 1 !important;
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.sub-title-wrapper {
+  contain: content;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  display: block;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin: 0;
+  padding: 0;
+}
+
 /* Styles pour le carousel pour éviter le CLS */
 .home_carousel {
   contain: size layout style;
@@ -64,6 +97,11 @@
   .deus_main_title {
     font-size: clamp(2.5rem, 5vw, 4.75rem);
   }
+  
+  .sub-title {
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
 }
 
 @media (max-width: 991px) {
@@ -73,5 +111,15 @@
   
   .home_carousel {
     height: calc(100vh - 180px);
+  }
+  
+  .sub-title {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-top: 8px;
+  }
+  
+  .sub-title-wrapper {
+    padding: 0 10px;
   }
 } 

@@ -23,7 +23,11 @@
                                           v-text="mainTitle"
                                         />
                                         <div class="sub-title-wrapper">
-                                            <span class="sub-title" v-text="$t('message.index_main_subtitle_1_car_one')" />
+                                            <span 
+                                              class="sub-title" 
+                                              v-text="subTitle"
+                                              ref="subTitle"
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -170,6 +174,7 @@ export default {
           willChange: 'transform'
         },
         mainTitle: '',
+        subTitle: '',
         carouselHeight: 'auto',
         resizeObserver: null
     }
@@ -242,6 +247,7 @@ export default {
   },
   created() { 
     this.mainTitle = this.$t('message.index_main_title_car_one')
+    this.subTitle = this.$t('message.index_main_subtitle_1_car_one')
     
     if(this.$cookies.get('deussearch_connected') == 1) {
         this.loggedin = true;
@@ -259,9 +265,16 @@ export default {
     this.$nextTick(() => {
       requestAnimationFrame(() => {
         const title = this.$el.querySelector('.deus_main_title')
+        const subTitle = this.$refs.subTitle
+        
         if (title) {
           title.style.visibility = 'visible'
           title.style.opacity = '1'
+        }
+        
+        if (subTitle) {
+          subTitle.style.visibility = 'visible'
+          subTitle.style.opacity = '1'
         }
       })
     })
