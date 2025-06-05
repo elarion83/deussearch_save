@@ -3,8 +3,9 @@
         <div class="carousel_holders">
             <v-hover v-slot:default="{ hover }">
                 <v-carousel 
+                  ref="carousel"
                   class="home_carousel" 
-                  :cycle="hover ? false : true" 
+                  :cycle="!hover && !isReducedMotion" 
                   v-model="actual_step"  
                   :show-arrows="false"  
                   height="auto"
@@ -14,31 +15,31 @@
                 >
                     <v-carousel-item eager>
                         <div class="container">
-                            <div class="row align-items-center mb-30-none">
-                                <div class="col-lg-8 mt-4">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8">
                                     <div class="banner-content">
                                         <h1 class="title deus_main_title" >{{ $t('message.index_main_title_car_one') }} </h1>
                                         <span class="sub-title">{{ $t('message.index_main_subtitle_1_car_one') }} </span>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 mb-30 mt-2">
+                                <div class="col-lg-4">
                                     <div class="banner-btn-area">  
                                         <a  
-                                          class="cmn-btn content login_link pl-4 ml-3 pr-3" 
+                                          class="cmn-btn content login_link" 
                                           :title="$t('message.login_register_title')"  
                                           v-if="!loggedin" 
-                                          @click.stop="loginmodaldisplayed = true" 
+                                          @click.stop="showLoginModal" 
                                           :to="{ name: 'login'}"
                                           role="button"
                                           tabindex="0"
                                         >
                                             {{ $t('message.register_long_title') }}  
-                                            <font-awesome-icon class="ml-2 mr-2" :icon="['fas', 'long-arrow-alt-right']" aria-hidden="true" />
+                                            <font-awesome-icon class="ml-2" :icon="['fas', 'long-arrow-alt-right']" aria-hidden="true" />
                                         </a>
                                          
                                         <button 
-                                          class="cmn-btn content pl-4 mt-3 ml-3 pr-3"  
-                                          @click="actual_step++" 
+                                          class="cmn-btn content mt-3"  
+                                          @click="nextStep" 
                                           :title="$t('message.general_search')"
                                           aria-label="Search"
                                         >
@@ -52,34 +53,38 @@
                     </v-carousel-item>
                     <v-carousel-item>
                         <Suspense>
-                          <global-search class="mb-3"></global-search>
+                          <template #default>
+                            <global-search class="mb-3"></global-search>
+                          </template>
                           <template #fallback>
-                            <div class="loading-placeholder">Loading search...</div>
+                            <div class="loading-placeholder" aria-label="Loading search">
+                              <v-progress-circular indeterminate color="primary" />
+                            </div>
                           </template>
                         </Suspense>
                     </v-carousel-item>
                     <v-carousel-item>
                         <div class="container">
-                            <div class="row align-items-center mb-30-none">
-                                <div class="col-lg-8 mt-4">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8">
                                     <div class="banner-content">
                                         <h1 class="title deus_main_title" >{{ $t('message.index_main_title') }} </h1>
                                         <span class="sub-title">{{ $t('message.index_main_subtitle_1') }}  </span>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 mb-30 mt-2">
+                                <div class="col-lg-4">
                                     <div class="banner-btn-area mt-4">  
                                         <router-link 
                                           :to="{ name: 'deus_test_'+$i18n.locale}" 
-                                          class="cmn-btn content pl-4 ml-3 pr-3" 
+                                          class="cmn-btn content" 
                                           :title="$t('message.menu_deus')"
                                         >
                                             {{ $t('message.menu_deus') }}  
-                                            <font-awesome-icon class="ml-2 mr-2" :icon="['fas', 'long-arrow-alt-right']" aria-hidden="true" />
+                                            <font-awesome-icon class="ml-2" :icon="['fas', 'long-arrow-alt-right']" aria-hidden="true" />
                                         </router-link>
                                         <button 
-                                          class="cmn-btn content pl-4 mt-3 ml-3 pr-3"  
-                                          @click="actual_step--" 
+                                          class="cmn-btn content mt-3"  
+                                          @click="previousStep" 
                                           :title="$t('message.general_search')"
                                           aria-label="Search"
                                         >
@@ -101,31 +106,36 @@
           max-width="450"
           :retain-focus="false"
           transition="fade-transition"
+          content-class="login-modal"
         >
           <Suspense>
-            <login-register-modal :tab_open="1" @logUserIn="logUserIn">
-            </login-register-modal>
+            <template #default>
+              <login-register-modal :tab_open="1" @logUserIn="handleLogin">
+              </login-register-modal>
+            </template>
             <template #fallback>
-              <div class="loading-placeholder">Loading login form...</div>
+              <div class="loading-placeholder" aria-label="Loading login form">
+                <v-progress-circular indeterminate color="primary" />
+              </div>
             </template>
           </Suspense>
         </v-dialog>
         
         <v-snackbar 
-          v-model="LoggedSnackBar"
+          v-model="snackbar.show"
           :timeout="3000"
+          :color="snackbar.color"
           position="top"
         >
-          {{ LoggedSnackBarMessage }} 
-          <template v-slot:action="{ attrs }">
+          {{ snackbar.message }}
+          <template #action="{ attrs }">
             <v-btn
-              class="pl-2"
-              text
+              icon
               v-bind="attrs"
-              @click="LoggedSnackBar = false"
+              @click="snackbar.show = false"
               aria-label="Close notification"
             >
-              <font-awesome-icon :icon="['fa', 'times']" aria-hidden="true" />
+              <v-icon>mdi-close</v-icon>
             </v-btn>
           </template>
         </v-snackbar>
@@ -161,13 +171,17 @@ export default {
         loggedin: false,
         loggedinuser: null,
         loginmodaldisplayed: false,
-        LoggedSnackBar: false,
-        LoggedSnackBarMessage: '',
+        snackbar: {
+          show: false,
+          message: '',
+          color: 'success'
+        },
         sectionStyle: {
           overflow: 'visible',
-          contain: 'content',
+          contain: 'layout style paint',
           willChange: 'transform'
-        }
+        },
+        isReducedMotion: false
     }
   },
   metaInfo() {
@@ -178,19 +192,34 @@ export default {
       }
   },
   methods:{
-    logUserIn() {
+    showLoginModal() {
+      this.loginmodaldisplayed = true;
+    },
+    handleLogin() {
       this.loginmodaldisplayed = false;
       this.loggedin = true;
-      this.LoggedSnackBar = true;
-      this.LoggedSnackBarMessage = "Connecté";
+      this.showSnackbar('Connecté', 'success');
     },
     logout() {
       this.$cookies.remove("deussearch_connected");
       this.$cookies.remove("deussearch_user");
       this.$router.push('/');
       this.loggedin = false;
-      this.LoggedSnackBar = true;
-      this.LoggedSnackBarMessage = "Déconnecté";
+      this.showSnackbar('Déconnecté', 'info');
+    },
+    showSnackbar(message, color = 'success') {
+      this.snackbar.message = message;
+      this.snackbar.color = color;
+      this.snackbar.show = true;
+    },
+    nextStep() {
+      this.actual_step++;
+    },
+    previousStep() {
+      this.actual_step--;
+    },
+    checkReducedMotion() {
+      this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     }
   },
   created() { 
@@ -201,6 +230,13 @@ export default {
       this.loggedin = true;
       this.loggedinuser = JSON.parse(this.$cookies.get('deussearch_user'));
     });
+  },
+  mounted() {
+    this.checkReducedMotion();
+    window.matchMedia('(prefers-reduced-motion: reduce)').addListener(this.checkReducedMotion);
+  },
+  beforeDestroy() {
+    window.matchMedia('(prefers-reduced-motion: reduce)').removeListener(this.checkReducedMotion);
   }
 }
 </script>
@@ -208,6 +244,13 @@ export default {
 <style>
 .home_carousel {
   contain: content;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.banner-content {
+  transform: translateZ(0);
   will-change: transform;
 }
 
@@ -254,8 +297,22 @@ export default {
 }
 
 .loading-placeholder {
-    padding: 2rem;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
     background: rgba(9, 10, 29, 0.1);
+}
+
+.login-modal {
+  contain: content;
+  will-change: transform;
+}
+
+.cmn-btn {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  transform: translateZ(0);
+  will-change: transform;
 }
 </style>

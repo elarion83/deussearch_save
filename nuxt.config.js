@@ -12,8 +12,8 @@ export default {
     },
     meta: [
       { charset: 'utf-8' },
-      { hid: 'description', name: 'description', content: 'DeusSearch - Base de donnée collaborative française de jeu-vidéo.' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'description', name: 'description', content: 'DeusSearch - Base de donnée collaborative française de jeu-vidéo.' },
       { hid: 'theme-color', name: 'theme-color', content: '#1c1d55' },
       { hid: 'og:description', property: 'og:description', content: 'DeusSearch - Base de donnée collaborative française de jeu-vidéo.'},
       { hid: 'og:title', property: 'og:title', content: 'DeusSearch - La base de donnée collaborative'},       
@@ -26,22 +26,33 @@ export default {
       { hid: 'twitter:image:src', property: 'twitter:image:src', content: 'https://img.deussearch.fr/static/share_n.jpg'},
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/fav.png' }
+      { rel: 'icon', type: 'image/x-icon', href: '/fav.png' },
+      { rel: 'preload', href: '/fonts/oswald-bold.woff2', as: 'font', type: 'font/woff2', crossorigin: true },
+      { rel: 'preload', href: '/css/critical.css', as: 'style' }
     ],
     script: [
       {
-        src: "https://code.jquery.com/jquery-3.5.1.min.js"
+        src: "https://code.jquery.com/jquery-3.5.1.min.js",
+        defer: true
+      }
+    ],
+    __dangerouslyDisableSanitizers: ['script'],
+    style: [
+      {
+        cssText: '@import url("/css/critical.css");',
+        type: 'text/css'
       }
     ]
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
-    '~/assets/css/bootstrap.min.css',
-    '~/assets/css/style.css',
-    '~/assets/css/keyframes.css',
-    '~/assets/css/nice-select.css',
-    '~/assets/css/responsive.css',
+    '~/assets/css/critical.css',
+    { src: '~/assets/css/bootstrap.min.css', mode: 'lazy' },
+    { src: '~/assets/css/style.css', mode: 'lazy' },
+    { src: '~/assets/css/keyframes.css', mode: 'lazy' },
+    { src: '~/assets/css/nice-select.css', mode: 'lazy' },
+    { src: '~/assets/css/responsive.css', mode: 'lazy' },
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
@@ -51,14 +62,43 @@ export default {
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
-  components: true,
+  components: {
+    dirs: [
+      '~/components',
+      {
+        path: '~/components/Home',
+        prefix: 'Home'
+      }
+    ]
+  },
 
   // Modules for dev and build (https://go.nuxtjs.dev/config-modules)
   buildModules: [
     '@nuxtjs/vuetify',
     '@nuxtjs/date-fns',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    '@nuxtjs/pwa'
   ],
+
+  // PWA configuration
+  pwa: {
+    manifest: {
+      name: 'DeusSearch',
+      lang: 'fr',
+      useWebmanifestExtension: false
+    },
+    workbox: {
+      offline: true,
+      runtimeCaching: [
+        {
+          urlPattern: 'https://img.deussearch.fr/.*',
+          handler: 'CacheFirst',
+          method: 'GET',
+          strategyOptions: { cacheableResponse: { statuses: [0, 200] } }
+        }
+      ]
+    }
+  },
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
@@ -71,6 +111,7 @@ export default {
     ['cookie-universal-nuxt', { parseJSON: false }],
     '@nuxtjs/auth-next',
     ['nuxt-fontawesome', {
+      component: 'fa',
       imports: [
         {
           set: '@fortawesome/free-solid-svg-icons',
@@ -79,7 +120,7 @@ export default {
         {
           set: '@fortawesome/free-brands-svg-icons',
           icons: ['fab']
-        },
+        }
       ]
     }]
   ],
@@ -111,24 +152,71 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-    transpile: ['vuetify/lib', "tiptap-vuetify"],
-    publicPath: '/_nuxt/',
+    extractCSS: true,
     optimization: {
+      splitChunks: {
+        cacheGroups: {
+          styles: {
+            name: 'styles',
+            test: /\.(css|vue)$/,
+            chunks: 'all',
+            enforce: true
+          }
+        }
+      },
       minimize: true
     },
     babel: {
       compact: true
+    },
+    transpile: ['vuetify/lib', "tiptap-vuetify"],
+    postcss: {
+      preset: {
+        autoprefixer: {
+          grid: true
+        }
+      }
+    },
+    html: {
+      minify: {
+        collapseBooleanAttributes: true,
+        decodeEntities: true,
+        minifyCSS: true,
+        minifyJS: true,
+        processConditionalComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        trimCustomFragments: true,
+        useShortDoctype: true
+      }
     }
   },
 
   googleFonts: {
     families: {
-      Oswald: true,
-    }
+      Oswald: {
+        wght: [700],
+        display: 'swap'
+      }
+    },
+    display: 'swap',
+    preload: true
   },
 
   router: {
-    trailingSlash: false
+    trailingSlash: false,
+    prefetchLinks: true
+  },
+
+  render: {
+    bundleRenderer: {
+      shouldPreload: (file, type) => {
+        return ['script', 'style', 'font'].includes(type)
+      }
+    },
+    static: {
+      maxAge: 1000 * 60 * 60 * 24 * 7
+    }
   },
 
   // Configuration spécifique pour Vercel

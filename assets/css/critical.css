@@ -1,0 +1,64 @@
+/* Critical CSS pour le LCP */
+.home_banner {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  contain: layout style paint;
+  transform: translateZ(0);
+  will-change: transform;
+  background: #1c1d55;
+}
+
+.banner-section {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.home_carousel {
+  contain: content;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.banner-content {
+  position: relative;
+  z-index: 1;
+  margin-top: 35px;
+  transform: translateZ(0);
+}
+
+.deus_main_title {
+  font-size: 76px;
+  line-height: 86px;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-family: "Oswald", sans-serif;
+}
+
+@media (max-width: 991px) {
+  .deus_main_title {
+    font-size: 48px;
+    line-height: 58px;
+  }
+  .home_carousel {
+    height: auto;
+  }
+}
+
+/* Preload des polices critiques */
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Oswald Bold'), local('Oswald-Bold'),
+       url('/fonts/oswald-bold.woff2') format('woff2');
+} 
