@@ -2,7 +2,7 @@
   <div data-view>
     <home-banner></home-banner> 
     <home-presentation ></home-presentation>    
-    <streamers-partenaires no-ssr />
+    <!--<streamers-partenaires no-ssr />-->
     <home-blog no-ssr />
    <!-- <home-event></home-event>-->
     <list-of-games show_title="1" pagination="0" tag_id="6" rand="1" limit="6" note_min="4"  nombre_vote="250" no-ssr />
@@ -11,7 +11,7 @@
 
     <!-- <list-of-games genre_id="19" rand="1" limit="6" note_min="2" nombre_vote="50" no-ssr/></list-of-games> -->
     <home-lastresults no-ssr />
-    <streamers-recommended no-ssr />
+   <!-- <streamers-recommended no-ssr />-->
   </div>
 </template>
 
@@ -19,8 +19,8 @@
 import HomeBanner from '../components/Home/HomeBanner';
 //import HomeEvent from '../components/Home/HomeEvent';
 import HomeLastresults from '../components/Home/HomeLastsResults';
-import StreamersPartenaires from '../components/StreamersPartners';
-import StreamersRecommanded from '../components/StreamersRecommanded';
+//import StreamersPartenaires from '../components/StreamersPartners';
+//import StreamersRecommanded from '../components/StreamersRecommanded';
 import HomePresentation from '../components/Home/HomePresentation';
 import HomeBlog from '../components/Home/HomeBlog';
 import HomeListOfGames from '../components/Home/HomeListOfGames';
@@ -36,8 +36,8 @@ export default {
     'home-lastresults' : HomeLastresults,
     'home-blog' : HomeBlog,
     'home-presentation' : HomePresentation,
-    'streamers-partenaires' : StreamersPartenaires,
-    'streamers-recommended' : StreamersRecommanded,
+   // 'streamers-partenaires' : StreamersPartenaires,
+   // 'streamers-recommended' : StreamersRecommanded,
     'list-of-games' : HomeListOfGames
   },
   created() {
