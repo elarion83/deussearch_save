@@ -79,7 +79,9 @@
                         <div class="copyright-content">
                             <p>V2.6 - Copyright © 2021. <span> All Rights Reserved By <router-link :to="{ name: 'home_'+$i18n.locale}"> 
                               DeusSearch
-                            </router-link> - Association Loi 1901</span>
+                            </router-link> - Par <a href="https://nicolas-gruwe.fr" target="_blank"> 
+                              Nicolas Gruwe
+                            </a> - Association Loi 1901</span>
                             
                             </p>
                         </div>
