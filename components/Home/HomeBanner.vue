@@ -69,7 +69,7 @@
                                 <div class="col-lg-8">
                                     <div class="banner-content">
                                         <h1 class="title deus_main_title" >{{ $t('message.index_main_title') }} </h1>
-                                        <span class="sub-title">{{ $t('message.index_main_subtitle_1') }}  </span>
+                                      
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
