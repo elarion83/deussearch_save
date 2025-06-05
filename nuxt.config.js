@@ -111,7 +111,8 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-    transpile: ['vuetify/lib', "tiptap-vuetify"]
+    transpile: ['vuetify/lib', "tiptap-vuetify"],
+    publicPath: '/_nuxt/',
   },
 
   googleFonts: {
@@ -126,6 +127,7 @@ export default {
 
   // Configuration spécifique pour Vercel
   generate: {
-    fallback: true // Active le mode fallback pour les routes dynamiques
+    dir: 'dist',
+    fallback: true
   }
 }
