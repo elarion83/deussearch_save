@@ -148,20 +148,8 @@ export default {
   },
 
   image: {
-    domains: ['img.deussearch.fr'],
-    provider: 'vercel',
-    screens: {
-      xs: 320,
-      sm: 640,
-      md: 768,
-      lg: 1024,
-      xl: 1280,
-      xxl: 1536,
-      '2xl': 1536
-    },
-    vercel: {
-      domains: ['img.deussearch.fr']
-    }
+    provider: 'static',
+    dir: 'static'
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
