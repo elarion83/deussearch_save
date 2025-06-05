@@ -27,20 +27,12 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/fav.png' },
-      { rel: 'preload', href: '/fonts/oswald-bold.woff2', as: 'font', type: 'font/woff2', crossorigin: true },
-      { rel: 'preload', href: '/css/critical.css', as: 'style' }
+      { rel: 'preload', href: '/fonts/oswald-bold.woff2', as: 'font', type: 'font/woff2', crossorigin: true }
     ],
     script: [
       {
         src: "https://code.jquery.com/jquery-3.5.1.min.js",
         defer: true
-      }
-    ],
-    __dangerouslyDisableSanitizers: ['script'],
-    style: [
-      {
-        cssText: '@import url("/css/critical.css");',
-        type: 'text/css'
       }
     ]
   },
@@ -48,11 +40,11 @@ export default {
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
     '~/assets/css/critical.css',
-    { src: '~/assets/css/bootstrap.min.css', mode: 'lazy' },
-    { src: '~/assets/css/style.css', mode: 'lazy' },
-    { src: '~/assets/css/keyframes.css', mode: 'lazy' },
-    { src: '~/assets/css/nice-select.css', mode: 'lazy' },
-    { src: '~/assets/css/responsive.css', mode: 'lazy' },
+    '~/assets/css/bootstrap.min.css',
+    '~/assets/css/style.css',
+    '~/assets/css/keyframes.css',
+    '~/assets/css/nice-select.css',
+    '~/assets/css/responsive.css',
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
@@ -62,43 +54,14 @@ export default {
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
-  components: {
-    dirs: [
-      '~/components',
-      {
-        path: '~/components/Home',
-        prefix: 'Home'
-      }
-    ]
-  },
+  components: true,
 
   // Modules for dev and build (https://go.nuxtjs.dev/config-modules)
   buildModules: [
     '@nuxtjs/vuetify',
     '@nuxtjs/date-fns',
-    '@nuxtjs/google-fonts',
-    '@nuxtjs/pwa'
+    '@nuxtjs/google-fonts'
   ],
-
-  // PWA configuration
-  pwa: {
-    manifest: {
-      name: 'DeusSearch',
-      lang: 'fr',
-      useWebmanifestExtension: false
-    },
-    workbox: {
-      offline: true,
-      runtimeCaching: [
-        {
-          urlPattern: 'https://img.deussearch.fr/.*',
-          handler: 'CacheFirst',
-          method: 'GET',
-          strategyOptions: { cacheableResponse: { statuses: [0, 200] } }
-        }
-      ]
-    }
-  },
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
@@ -155,16 +118,11 @@ export default {
     extractCSS: true,
     optimization: {
       splitChunks: {
-        cacheGroups: {
-          styles: {
-            name: 'styles',
-            test: /\.(css|vue)$/,
-            chunks: 'all',
-            enforce: true
-          }
-        }
-      },
-      minimize: true
+        chunks: 'all',
+        automaticNameDelimiter: '.',
+        name: true,
+        maxSize: 244000
+      }
     },
     babel: {
       compact: true
@@ -204,19 +162,7 @@ export default {
   },
 
   router: {
-    trailingSlash: false,
-    prefetchLinks: true
-  },
-
-  render: {
-    bundleRenderer: {
-      shouldPreload: (file, type) => {
-        return ['script', 'style', 'font'].includes(type)
-      }
-    },
-    static: {
-      maxAge: 1000 * 60 * 60 * 24 * 7
-    }
+    trailingSlash: false
   },
 
   // Configuration spécifique pour Vercel

@@ -5,7 +5,7 @@
                 <v-carousel 
                   ref="carousel"
                   class="home_carousel" 
-                  :cycle="!hover && !isReducedMotion" 
+                  :cycle="!hover" 
                   v-model="actual_step"  
                   :show-arrows="false"  
                   height="auto"
@@ -52,16 +52,7 @@
                         </div>
                     </v-carousel-item>
                     <v-carousel-item>
-                        <Suspense>
-                          <template #default>
-                            <global-search class="mb-3"></global-search>
-                          </template>
-                          <template #fallback>
-                            <div class="loading-placeholder" aria-label="Loading search">
-                              <v-progress-circular indeterminate color="primary" />
-                            </div>
-                          </template>
-                        </Suspense>
+                        <global-search class="mb-3"></global-search>
                     </v-carousel-item>
                     <v-carousel-item>
                         <div class="container">
@@ -108,17 +99,10 @@
           transition="fade-transition"
           content-class="login-modal"
         >
-          <Suspense>
-            <template #default>
-              <login-register-modal :tab_open="1" @logUserIn="handleLogin">
-              </login-register-modal>
-            </template>
-            <template #fallback>
-              <div class="loading-placeholder" aria-label="Loading login form">
-                <v-progress-circular indeterminate color="primary" />
-              </div>
-            </template>
-          </Suspense>
+          <login-register-modal 
+            :tab_open="1" 
+            @logUserIn="handleLogin"
+          />
         </v-dialog>
         
         <v-snackbar 
@@ -145,13 +129,12 @@
 <script lang="js">
 import { defineAsyncComponent } from 'vue'
 import GlobalSearch from '@/components/GlobalSearch'
+import loginRegister from '../login'
 
 export default {
   name:'home-banner',
   components: {
-    'login-register-modal': defineAsyncComponent(() => 
-      import('../login')
-    ),
+    'login-register-modal': loginRegister,
     'global-search' : GlobalSearch
   },
   props: {
