@@ -1,0 +1,38 @@
+/* Styles critiques pour le titre principal */
+.deus_main_title {
+  font-size: clamp(2.5rem, 5vw, 4.75rem);
+  line-height: 1.1;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-family: "Oswald", system-ui, -apple-system, sans-serif;
+  contain: style layout;
+  transform: translateZ(0);
+  will-change: transform;
+  text-rendering: optimizeLegibility;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  height: min-content;
+}
+
+/* Styles pour le carousel pour éviter le CLS */
+.home_carousel {
+  contain: size layout style;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  min-height: 400px;
+}
+
+@media (min-width: 1100px) {
+  .home_carousel {
+    min-height: 500px;
+  }
+}
+
+@media (max-width: 991px) {
+  .deus_main_title {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+} 

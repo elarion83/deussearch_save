@@ -30,8 +30,20 @@ export default {
       { 
         rel: 'preload',
         as: 'style',
+        href: '/css/critical-title.css',
+        onload: "this.onload=null;this.rel='stylesheet'"
+      },
+      { 
+        rel: 'preload',
+        as: 'style',
         href: 'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css',
-        onload: "this.rel='stylesheet'"
+        onload: "this.onload=null;this.rel='stylesheet'"
+      }
+    ],
+    style: [
+      {
+        cssText: '@import url("/css/critical-title.css");',
+        type: 'text/css'
       }
     ],
     script: [
@@ -45,6 +57,7 @@ export default {
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
     '~/assets/css/critical.css',
+    '~/assets/css/critical-title.css',
     '~/assets/css/bootstrap.min.css',
     '~/assets/css/style.css',
     '~/assets/css/keyframes.css',

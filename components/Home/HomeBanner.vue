@@ -8,7 +8,7 @@
                   :cycle="!hover" 
                   v-model="actual_step"  
                   :show-arrows="false"  
-                  height="auto"
+                  :height="carouselHeight"
                   :continuous="false"
                   :interval="6000"
                   hide-delimiter-background
@@ -18,7 +18,11 @@
                             <div class="row align-items-center">
                                 <div class="col-lg-8">
                                     <div class="banner-content">
-                                        <h1 class="title deus_main_title" >{{ $t('message.index_main_title_car_one') }} </h1>
+                                        <h1 
+                                          class="title deus_main_title"
+                                          :style="titleStyle"
+                                          v-text="$t('message.index_main_title_car_one')"
+                                        />
                                         <div class="sub-title-wrapper">
                                             <span class="sub-title" v-text="$t('message.index_main_subtitle_1_car_one')" />
                                         </div>
@@ -166,7 +170,13 @@ export default {
           contain: 'layout style paint',
           willChange: 'transform'
         },
-        isReducedMotion: false
+        titleStyle: {
+          contain: 'style layout',
+          willChange: 'transform',
+          fontDisplay: 'swap'
+        },
+        carouselHeight: 'auto',
+        resizeObserver: null
     }
   },
   metaInfo() {
@@ -203,8 +213,36 @@ export default {
     previousStep() {
       this.actual_step--;
     },
-    checkReducedMotion() {
-      this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    initializeCarouselHeight() {
+      this.$nextTick(() => {
+        this.updateCarouselHeight()
+      })
+    },
+    updateCarouselHeight() {
+      const vh = window.innerHeight
+      const height = window.innerWidth >= 1100 ? 
+        `${vh - 210}px` : 
+        window.innerWidth >= 768 ? 
+          `${vh - 180}px` : 
+          `${vh - 150}px`
+      
+      this.carouselHeight = height
+    },
+    setupResizeObserver() {
+      if ('ResizeObserver' in window) {
+        this.resizeObserver = new ResizeObserver(entries => {
+          for (const entry of entries) {
+            if (entry.target.classList.contains('home_carousel')) {
+              this.updateCarouselHeight()
+            }
+          }
+        })
+        
+        const carousel = this.$refs.carousel?.$el
+        if (carousel) {
+          this.resizeObserver.observe(carousel)
+        }
+      }
     }
   },
   created() { 
@@ -217,27 +255,53 @@ export default {
     });
   },
   mounted() {
-    this.checkReducedMotion();
-    window.matchMedia('(prefers-reduced-motion: reduce)').addListener(this.checkReducedMotion);
+    this.initializeCarouselHeight()
+    this.setupResizeObserver()
+    window.addEventListener('resize', this.updateCarouselHeight)
   },
   beforeDestroy() {
-    window.matchMedia('(prefers-reduced-motion: reduce)').removeListener(this.checkReducedMotion);
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect()
+    }
+    window.removeEventListener('resize', this.updateCarouselHeight)
   }
 }
 </script>
 
 <style>
+.deus_main_title {
+  font-size: clamp(2.5rem, 5vw, 4.75rem);
+  line-height: 1.1;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-family: "Oswald", system-ui, -apple-system, sans-serif;
+  contain: style layout;
+  transform: translateZ(0);
+  will-change: transform;
+  text-rendering: optimizeLegibility;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  height: min-content;
+}
+
 .home_carousel {
-  contain: content;
+  contain: size layout style;
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
+  min-height: 400px;
 }
 
 .banner-content {
   transform: translateZ(0);
   will-change: transform;
   contain: layout style;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .sub-title-wrapper {
@@ -248,8 +312,8 @@ export default {
 
 .sub-title {
   display: block;
-  font-size: 18px;
-  line-height: 28px;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.6;
   color: #ffffff;
   margin-top: 10px;
   font-weight: 400;
@@ -345,6 +409,7 @@ export default {
 @media (prefers-reduced-motion: reduce) {
   .home_carousel,
   .banner-content,
+  .deus_main_title,
   .sub-title-wrapper,
   .sub-title {
     transition: none !important;
