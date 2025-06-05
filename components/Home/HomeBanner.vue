@@ -19,7 +19,9 @@
                                 <div class="col-lg-8">
                                     <div class="banner-content">
                                         <h1 class="title deus_main_title" >{{ $t('message.index_main_title_car_one') }} </h1>
-                                        <span class="sub-title">{{ $t('message.index_main_subtitle_1_car_one') }} </span>
+                                        <div class="sub-title-wrapper">
+                                            <span class="sub-title" v-text="$t('message.index_main_subtitle_1_car_one')" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -235,6 +237,25 @@ export default {
 .banner-content {
   transform: translateZ(0);
   will-change: transform;
+  contain: layout style;
+}
+
+.sub-title-wrapper {
+  contain: content;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.sub-title {
+  display: block;
+  font-size: 18px;
+  line-height: 28px;
+  color: #ffffff;
+  margin-top: 10px;
+  font-weight: 400;
+  transform: translateZ(0);
+  will-change: transform;
+  text-rendering: optimizeLegibility;
 }
 
 @media (max-width: 991px) {
@@ -297,5 +318,37 @@ export default {
   margin: 0.5rem;
   transform: translateZ(0);
   will-change: transform;
+}
+
+/* Optimisations pour le mobile */
+@media (max-width: 991px) {
+  .banner-content {
+    text-align: center;
+    padding: 1rem;
+    contain: content;
+  }
+  
+  .banner-btn-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .sub-title {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+/* Optimisations de performance */
+@media (prefers-reduced-motion: reduce) {
+  .home_carousel,
+  .banner-content,
+  .sub-title-wrapper,
+  .sub-title {
+    transition: none !important;
+    animation: none !important;
+  }
 }
 </style>

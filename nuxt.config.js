@@ -27,7 +27,12 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/fav.png' },
-      { rel: 'preload', href: '/fonts/oswald-bold.woff2', as: 'font', type: 'font/woff2', crossorigin: true }
+      { 
+        rel: 'preload',
+        as: 'style',
+        href: 'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css',
+        onload: "this.rel='stylesheet'"
+      }
     ],
     script: [
       {
@@ -58,9 +63,24 @@ export default {
 
   // Modules for dev and build (https://go.nuxtjs.dev/config-modules)
   buildModules: [
-    '@nuxtjs/vuetify',
+    ['@nuxtjs/vuetify', {
+      defaultAssets: {
+        font: false,
+        icons: false
+      },
+      treeShake: true
+    }],
     '@nuxtjs/date-fns',
-    '@nuxtjs/google-fonts'
+    ['@nuxtjs/google-fonts', {
+      download: true,
+      display: 'swap',
+      preload: true,
+      families: {
+        Oswald: {
+          wght: [700],
+        }
+      }
+    }]
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -148,17 +168,6 @@ export default {
         useShortDoctype: true
       }
     }
-  },
-
-  googleFonts: {
-    families: {
-      Oswald: {
-        wght: [700],
-        display: 'swap'
-      }
-    },
-    display: 'swap',
-    preload: true
   },
 
   router: {
