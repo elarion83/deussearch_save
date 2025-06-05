@@ -149,23 +149,7 @@ export default {
 
   image: {
     domains: ['img.deussearch.fr'],
-    provider: 'ipx',
-    presets: {
-      thumbnail: {
-        modifiers: {
-          format: 'webp',
-          width: 300,
-          height: 200
-        }
-      },
-      game: {
-        modifiers: {
-          format: 'webp',
-          width: 500,
-          height: 300
-        }
-      }
-    },
+    provider: 'vercel',
     screens: {
       xs: 320,
       sm: 640,
@@ -174,6 +158,9 @@ export default {
       xl: 1280,
       xxl: 1536,
       '2xl': 1536
+    },
+    vercel: {
+      domains: ['img.deussearch.fr']
     }
   },
 
@@ -191,7 +178,7 @@ export default {
     babel: {
       compact: true
     },
-    transpile: ['vuetify/lib', "tiptap-vuetify", '@nuxt/image'],
+    transpile: ['vuetify/lib', "tiptap-vuetify"],
     postcss: {
       preset: {
         autoprefixer: {
